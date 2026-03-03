@@ -3,11 +3,23 @@ import base64
 import json  # importing packages needed to read json credentials/encode+decode and call the api
 
 
-# 1. getting access token using the client credentials method:
-def get_access_token():
-
+# 1. reading the credentials json so that the file is opened once for use for the client credentials and access token:
+def load_credentials():
     with open("api_creds.json", "r") as credentials:
-        api_creds = json.load(credentials)
+        return json.load(credentials)
+
+# returning the client id from the credentials json to use the FindingAPI for sold listings:
+
+
+def get_client_id():
+    api_creds = load_credentials()
+    return api_creds["app_client_id"]
+
+
+# returning the client credentials access token from the credentials json to authenticate and use the BrowseAPI:
+
+def get_access_token():
+    api_creds = load_credentials()
 
     client_id = api_creds["app_client_id"]
     client_secret = api_creds["client_secret"]
@@ -29,19 +41,12 @@ def get_access_token():
     )
     response.raise_for_status()
 
-    def get_client_id():
-        with open ("api_creds.json", "r") as credentials2:
-            api_creds = json.load(credentials2)
-            return api_creds["app_client_id"]
+    access_token = response.json
 
-    response.raise_for_status()
-
-    access_token = response.json().get("access_token")
+    response.json().get("access_token")
     if not access_token:
         raise ValueError(f"Failed to get token: {response.json()}")
 
     return access_token
-
-
 
 
