@@ -29,6 +29,13 @@ def get_access_token():
     )
     response.raise_for_status()
 
+    def get_client_id():
+        with open ("api_creds.json", "r") as credentials2:
+            api_creds = json.load(credentials2)
+            return api_creds["app_client_id"]
+
+    response.raise_for_status()
+
     access_token = response.json().get("access_token")
     if not access_token:
         raise ValueError(f"Failed to get token: {response.json()}")
