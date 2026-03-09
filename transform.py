@@ -45,7 +45,7 @@ def transform_listings(raw_active):
             "search_week":          search_week
         })
 
-        return listings
+    return listings
 
 # mapping the raw Finding API sold listing fields to the sales table schema
 

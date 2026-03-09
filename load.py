@@ -11,7 +11,7 @@ def load_credentials(db_creds="db_creds.json"):
 
 def db_connection():
     credentials = load_credentials()
-    return psycopg2.connect(credentials)
+    return psycopg2.connect(**credentials)
 
 
 # inserts brands into the brand table and returns a look-up dictionary to map brand_name and brand_id to use in the
