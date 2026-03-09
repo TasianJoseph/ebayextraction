@@ -23,7 +23,7 @@ def load_brands(transformed_brands):
             with connect.cursor() as cursor:
                 insert_data = """
                 INSERT INTO brands (brand_name, brand_type)
-                VALUES (%(brand_name)s, %(brand_type)s
+                VALUES (%(brand_name)s, %(brand_type)s)
                 ON CONFLICT (brand_name) DO NOTHING;
                 """
                 cursor.executemany(insert_data, transformed_brands)
@@ -31,7 +31,7 @@ def load_brands(transformed_brands):
                 # querying to ask postgres to return the columns brand_ids postgresql assigned to each brand_name to
                 # returning all the relevant rows - returns them as tuples ([1, Balenciaga])
 
-                cursor.exectue("SELECT brand_idm brand_name FROM brands")
+                cursor.execute("SELECT brand_id, brand_name FROM brands")
                 brand_lookup = {row[1]: row[0] for row in cursor.fetchall()}
 
         print(f"  Brands loaded: {len(brand_lookup)}")
