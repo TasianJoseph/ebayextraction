@@ -48,5 +48,3 @@ def get_access_token():
         raise ValueError(f"Failed to get token: {response.json()}")
 
     return access_token
-
-
