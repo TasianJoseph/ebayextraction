@@ -63,7 +63,7 @@ def load_listings(transformed_listings, brand_lookup):
                         %(listing_status)s, %(snapshot_date)s, %(search_week)s
                         );
                     """
-                    cursor.executemany(insert_query, transformed_listings)
+                cursor.executemany(insert_query, transformed_listings)
 
         print(f"  Listings loaded: {len(transformed_listings)}")
 
