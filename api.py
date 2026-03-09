@@ -18,10 +18,8 @@ BRANDS = {
 
 
 def fetch_active_listings(query, max_items=TARGET):
-    """
-    Fetches up to 300 active listings for a brand from the Browse API.
-    Paginates using offset until target is reached or listings are exhausted.
-    """
+    #  Fetching 300 active listings for each brand from the Browse API. Paginates using offset until target is reached.
+
     access_token = get_access_token()
 
     headers = {
@@ -31,7 +29,7 @@ def fetch_active_listings(query, max_items=TARGET):
     }
 
     all_items = []
-    offset = 0       # starting with the very first item in the list
+    offset = 0  # starting with the very first item in the list
     page_number = 1  # counter for number of page results shown in terminal
 
     while len(all_items) < max_items:
@@ -73,10 +71,8 @@ def fetch_active_listings(query, max_items=TARGET):
 
 
 def fetch_sold_listings(query, max_items=TARGET, page_size=PAGE_SIZE_SOLD):
-    """
-    Fetches up to 300 sold listings for a brand from the Finding API.
-    Paginates using page_number until target is reached or pages are exhausted.
-    """
+    #  Fetching 300 sold listings for each brand from the Browse API. Paginates using offset until target is reached.
+
     client_id = get_client_id()
 
     all_items = []
@@ -105,7 +101,7 @@ def fetch_sold_listings(query, max_items=TARGET, page_size=PAGE_SIZE_SOLD):
 
         data = response.json()
 
-        # Navigate Finding API's nested response structure
+        # Navigate Finding APIs nested response structure
         search_result = (
             data
             .get("findCompletedItemsResponse", [{}])[0]
@@ -136,21 +132,11 @@ def fetch_sold_listings(query, max_items=TARGET, page_size=PAGE_SIZE_SOLD):
     return all_items[:max_items]
 
 
-def print_item(item):
-    """Prints a single transformed item's key fields in a readable format."""
-    print(f"    Title:     {item.get('title')}")
-    print(f"    Price:     {item.get('price', 'N/A')} {item.get('currency', '')}")
-    print(f"    Condition: {item.get('condition', 'N/A')}")
-    print(f"    URL:       {item.get('url', 'N/A')}")
-    print(f"    {'-' * 55}")
-
-
 def run_brand_search():
-    """
-    Loops through all brands, fetches 300 active and 300 sold
-    listings per brand, transforms and accumulates all results.
-    """
-    all_data = []
+    # Loops through all brands, fetches 300 active and 300 sold listings per brand, transforms and ac
+
+    all_active = []
+    all_sold = []
 
     for category, brands in BRANDS.items():
         print(f"\n{'=' * 60}")
@@ -162,45 +148,45 @@ def run_brand_search():
             print(f"  {'-' * 55}")
 
             try:
-                # Active listings — Extract then Transform
+                # Active listings printed
                 print(f"\n  Fetching active listings...")
                 raw_active = fetch_active_listings(brand)
-                structured_active = transform_items(
-                    raw_active, brand, category, listing_type="active"
-                )
-                print(f"  {len(structured_active)} active listings collected.")
+                print(f"  {len(raw_active)} active listings collected.")
 
-                # Sold listings — Extract then Transform
+                # Sold listings printed
                 print(f"\n  Fetching sold listings...")
                 raw_sold = fetch_sold_listings(brand)
-                structured_sold = transform_items(
-                    raw_sold, brand, category, listing_type="sold"
-                )
-                print(f"  {len(structured_sold)} sold listings collected.")
+                print(f"  {len(raw_sold)} sold listings collected.")
 
-                # Preview first 3 active listings
-                print(f"\n  Preview (first 3 active listings):")
-                for item in structured_active[:3]:
-                    print_item(item)
+                # Tagging each item with brand + category before returning because the raw api response omits this info
 
-                all_data.extend(structured_active)
-                all_data.extend(structured_sold)
+                for item in raw_active:
+                    item["_brand"] = brand
+                    item["_category"] = category
+                    item["_listing_type"] = "active"
 
-            except requests.exceptions.HTTPError as e:
-                print(f"  HTTP error fetching {brand}: {e}")
+                for item in raw_sold:
+                    item["_brand"] = brand
+                    item["_category"] = category
+                    item["_listing_type"] = "sold"
 
-            except Exception as e:
-                print(f"  Unexpected error fetching {brand}: {e}")
+                # Adds each brand list together and returns them as one result, using extend adds each item individually
+                all_active.extend(raw_active)
+                all_sold.extend(raw_sold)
 
+            except requests.exceptions.HTTPError as error:
+                print(f" Unexpected error fetching {brand}: {error}")
+
+            except Exception as error:
+                print(f" Unexpected error fetching {brand}: {error}")
+
+    # returned is 6 brands, 2 types of listing (active/sold), with a target of 300 listings each
+    # so the total should be 3600
+    total = len(all_active) + len(all_sold)
     total_expected = len(BRANDS["designer"] + BRANDS["streetwear"]) * 2 * TARGET
-    print(f"\n{'=' * 60}")
-    print(f"  COMPLETE — {len(all_data)} total records collected")
-    print(f"  Expected:  {total_expected} records (6 brands x 2 types x 300)")
-    print(f"{'=' * 60}\n")
+    print(f"\n{"=" * 60}")
+    print(f"  COMPLETE - {total} total records collected.")
+    print(f"  Expected {total_expected} records (6 brands x 2 brand types x 300 listings)")
+    print(f"{"=" * 60}\n")
 
-    return all_data
-
-
-# --- Entry Point ---
-if __name__ == "__main__":
-    all_data = run_brand_search()
+    return all_active, all_sold
