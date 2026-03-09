@@ -200,6 +200,7 @@ def run_brand_search():
 
     return all_active, all_sold
 
+
 # --- Entry Point ---
 if __name__ == "__main__":
     raw_active, raw_sold = run_brand_search()
