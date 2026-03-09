@@ -41,9 +41,7 @@ def get_access_token():
     )
     response.raise_for_status()
 
-    access_token = response.json
-
-    response.json().get("access_token")
+    access_token = response.json().get("access_token")
     if not access_token:
         raise ValueError(f"Failed to get token: {response.json()}")
 

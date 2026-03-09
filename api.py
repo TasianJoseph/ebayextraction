@@ -1,6 +1,7 @@
 import time
 import requests
 from api_config import get_access_token, get_client_id
+import json
 
 # --- Constants ---
 BROWSE_ENDPOINT = "https://api.ebay.com/buy/browse/v1/item_summary/search"
@@ -151,34 +152,42 @@ def run_brand_search():
                 # Active listings printed
                 print(f"\n  Fetching active listings...")
                 raw_active = fetch_active_listings(brand)
-                print(f"  {len(raw_active)} active listings collected.")
-
-                # Sold listings printed
-                print(f"\n  Fetching sold listings...")
-                raw_sold = fetch_sold_listings(brand)
-                print(f"  {len(raw_sold)} sold listings collected.")
-
-                # Tagging each item with brand + category before returning because the raw api response omits this info
-
                 for item in raw_active:
                     item["_brand"] = brand
                     item["_category"] = category
                     item["_listing_type"] = "active"
+                all_active.extend(raw_active)
+                print(f"  {len(raw_active)} active listings collected.")
 
+            except Exception as error:
+                print(f" Unexpected error fetching {brand}: {error}")
+
+            try:
+                # Sold listings printed
+                print(f"\n  Fetching sold listings...")
+                raw_sold = fetch_sold_listings(brand)
                 for item in raw_sold:
                     item["_brand"] = brand
                     item["_category"] = category
                     item["_listing_type"] = "sold"
-
-                # Adds each brand list together and returns them as one result, using extend adds each item individually
-                all_active.extend(raw_active)
                 all_sold.extend(raw_sold)
-
+                print(f"  {len(raw_sold)} sold listings collected.")
             except requests.exceptions.HTTPError as error:
                 print(f" Unexpected error fetching {brand}: {error}")
 
-            except Exception as error:
-                print(f" Unexpected error fetching {brand}: {error}")
+                # Tagging each item with brand + category before returning because the raw api response omits this info
+
+
+
+
+
+                # Adds each brand list together and returns them as one result, using extend adds each item individually
+
+
+
+
+
+
 
     # returned is 6 brands, 2 types of listing (active/sold), with a target of 300 listings each
     # so the total should be 3600
@@ -190,3 +199,11 @@ def run_brand_search():
     print(f"{"=" * 60}\n")
 
     return all_active, all_sold
+
+# --- Entry Point ---
+if __name__ == "__main__":
+    raw_active, raw_sold = run_brand_search()
+    print(json.dumps(raw_active[0], indent=2))
+    print(json.dumps(raw_sold[0], indent=2))
+
+
