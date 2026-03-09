@@ -47,4 +47,5 @@ def get_access_token():
     if not access_token:
         raise ValueError(f"Failed to get token: {response.json()}")
 
+# completing the function
     return access_token
