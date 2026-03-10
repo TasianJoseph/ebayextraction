@@ -9,7 +9,7 @@ def main():
     print("=" * 60)
 
     # Step 1: Extracting data from API:
-    print("\n[1/3] Extrac data from eBay API...")
+    print("\n[1/3] Extract data from eBay API...")
     raw_active, raw_sold = run_brand_search()
     print(f"  Active listings fetched: {len(raw_active)}")
     print(f"  Sold listings fetched:   {len(raw_sold)}")
