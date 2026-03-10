@@ -25,16 +25,16 @@ Due to the availability APIs with marketplace data on the eBay Developers Progra
 
 | **Python Packages**    |  **Package Name** |
 | -----------            | -----------       |    
-| API requests           | `requests`        |
-| Database connection    | `psycopg2-binary` |
-| Data transformation    | `datetime`        |
-| Credentials management | `json`            |
+| API Requests           | `requests`        |
+| Database Connection    | `psycopg2-binary` |
+| Data Transformation    | `datetime`        |
+| Credentials Management | `json`            |
 
 
 | **APIs**        | **API Name**                                                 |
 | -----------     | -----------                                                  |    
-| Active listings | eBay Browse API v1                                           |
-| Sold listings   | eBay Finding API (pending Marketplace Insights API approval) |
+| Active Listings | eBay Browse API v1                                           |
+| Sold Listings   | eBay Finding API (pending Marketplace Insights API approval) |
 
 
 
