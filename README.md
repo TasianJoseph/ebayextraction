@@ -23,23 +23,20 @@ Due to the availability APIs with marketplace data on the eBay Developers Progra
 | Scheduling        | Cron              |
 
 
-| **Python Packages**    |                   |
+| **Python Packages**    |  **Package Name** |
+| -----------            | -----------       |    
 | API requests           | `requests`        |
 | Database connection    | `psycopg2-binary` |
 | Data transformation    | `datetime`        |
 | Credentials management | `json`            |
 
-| **APIs**        |                                                              |
+
+| **APIs**        | **API Name**                                                 |
+| -----------     | -----------                                                  |    
 | Active listings | eBay Browse API v1                                           |
 | Sold listings   | eBay Finding API (pending Marketplace Insights API approval) |
 
 
-| API requests | `requests` |
-| Database connection | `psycopg2-binary` |
-| Data transformation | `datetime` |
-| Credentials management | `json` |
-| **APIs** | |
-| Active listings | eBay Browse API v1 |
-| Sold listings | eBay Finding API (pending Marketplace Insights API approval) |
+
 
 
