@@ -5,7 +5,7 @@ import json  # importing packages needed to read json credentials/encode+decode 
 
 # 1. reading the credentials json so that the file is opened once for use for the client credentials and access token:
 def load_credentials():
-    with open("api_creds.json", "r") as credentials:
+    with open("/Users/tashjoseph/ebayextraction/api_creds.json", "r") as credentials:
         return json.load(credentials)
 
 # returning the client id from the credentials json to use the FindingAPI for sold listings:

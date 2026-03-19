@@ -1,0 +1,37 @@
+
+============================================================
+  Starting process: 
+============================================================
+
+[1/3] Extract data from eBay API...
+
+============================================================
+  CATEGORY: DESIGNER
+============================================================
+
+  Brand: Balenciaga
+  -------------------------------------------------------
+
+  Fetching active listings...
+ Unexpected error fetching Balenciaga: [Errno 2] No such file or directory: 'api_creds.json'
+
+  Fetching sold listings...
+Traceback (most recent call last):
+  File "/Users/tashjoseph/ebayextraction/main.py", line 33, in <module>
+    main()
+  File "/Users/tashjoseph/ebayextraction/main.py", line 13, in main
+    raw_active, raw_sold = run_brand_search()
+                           ^^^^^^^^^^^^^^^^^^
+  File "/Users/tashjoseph/ebayextraction/api.py", line 168, in run_brand_search
+    raw_sold = fetch_sold_listings(brand)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tashjoseph/ebayextraction/api.py", line 77, in fetch_sold_listings
+    client_id = get_client_id()
+                ^^^^^^^^^^^^^^^
+  File "/Users/tashjoseph/ebayextraction/api_config.py", line 15, in get_client_id
+    api_creds = load_credentials()
+                ^^^^^^^^^^^^^^^^^^
+  File "/Users/tashjoseph/ebayextraction/api_config.py", line 8, in load_credentials
+    with open("api_creds.json", "r") as credentials:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'api_creds.json'
