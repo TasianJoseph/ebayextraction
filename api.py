@@ -204,7 +204,13 @@ def run_brand_search():
 # --- Entry Point ---
 if __name__ == "__main__":
     raw_active, raw_sold = run_brand_search()
-    print(json.dumps(raw_active[0], indent=2))
-    print(json.dumps(raw_sold[0], indent=2))
 
+    if raw_active:
+        print(json.dumps(raw_active[0], indent=2))
+    else:
+        print("No active listings returned")
 
+    if raw_sold:
+        print(json.dumps(raw_sold[0], indent=2))
+    else:
+        print("No sold listings returned")
