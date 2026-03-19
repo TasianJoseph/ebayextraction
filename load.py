@@ -1,11 +1,13 @@
 import json
 import psycopg2
-
+import os
 # loading the database credentials
 
 
 def load_credentials(db_creds="db_creds.json"):
-    with open(db_creds) as credentials:
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    creds_path = os.path.join(script_dir, db_creds)
+    with open(creds_path) as credentials:
         return json.load(credentials)
 
 
