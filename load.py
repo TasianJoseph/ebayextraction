@@ -85,7 +85,7 @@ def load_listings(transformed_listings, brand_lookup):
                     );
                 """
 
-                cursor.executemany(insert_query, transformed_listings)
+                cursor.executemany(insert_query, listings_to_insert)
 
         print(f"  Listings loaded: {len(transformed_listings)}")
 
@@ -119,6 +119,7 @@ def load_sales(transformed_sales):
                                            sold_date       = EXCLUDED.sold_date,
                                            snapshot_date   = EXCLUDED.snapshot_date;
                                    """
+
                 cursor.executemany(insert_query, transformed_sales)
 
         print(f"  Sales loaded: {len(transformed_sales)}")
