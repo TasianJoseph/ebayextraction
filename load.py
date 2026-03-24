@@ -51,9 +51,16 @@ def load_listings(transformed_listings, brand_lookup):
     try:
         with connect:
             with connect.cursor() as cursor:
+
                 listings_to_insert = []
+
                 for listing in transformed_listings:
                     brand_name = listing.get("brand_name")
+
+                    if brand_name not in brand_lookup:
+                        print(f"Missing brand_id for {brand_name}")
+                        continue
+
                     listings_to_insert.append({
                         "brand_id": brand_lookup[brand_name],
                         "title": listing["title"],
@@ -67,16 +74,17 @@ def load_listings(transformed_listings, brand_lookup):
                         "search_week": listing["search_week"]
                     })
 
-                    insert_query = """
-                        INSERT INTO listings (
-                        brand_id, title, price, currency, condition, url, listing_type, listing_status, snapshot_date,
-                        search_week
-                        )
-                        VALUES (
-                        %(brand_id)s, %(title)s, %(price)s, %(currency)s, %(condition)s, %(url)s, %(listing_type)s,
-                        %(listing_status)s, %(snapshot_date)s, %(search_week)s
-                        );
-                    """
+                insert_query = """
+                    INSERT INTO listings (
+                    brand_id, title, price, currency, condition, url, listing_type, listing_status, snapshot_date,
+                    search_week
+                    )
+                    VALUES (
+                    %(brand_id)s, %(title)s, %(price)s, %(currency)s, %(condition)s, %(url)s, %(listing_type)s,
+                    %(listing_status)s, %(snapshot_date)s, %(search_week)s
+                    );
+                """
+
                 cursor.executemany(insert_query, transformed_listings)
 
         print(f"  Listings loaded: {len(transformed_listings)}")
