@@ -51,9 +51,21 @@ def load_listings(transformed_listings, brand_lookup):
     try:
         with connect:
             with connect.cursor() as cursor:
+                listings_to_insert = []
                 for listing in transformed_listings:
-                    brand_name = listing.pop("brand_name")
-                    listing["brand_id"] = brand_lookup[brand_name]
+                    brand_name = listing.get("brand_name")
+                    listings_to_insert.append({
+                        "brand_id": brand_lookup[brand_name],
+                        "title": listing["title"],
+                        "price": listing["price"],
+                        "currency": listing["currency"],
+                        "condition": listing["condition"],
+                        "url": listing["url"],
+                        "listing_type": listing["listing_type"],
+                        "listing_status": listing["listing_status"],
+                        "snapshot_date": listing["snapshot_date"],
+                        "search_week": listing["search_week"]
+                    })
 
                     insert_query = """
                         INSERT INTO listings (
